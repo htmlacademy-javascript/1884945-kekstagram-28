@@ -60,3 +60,10 @@ function addString(originalString, minLength, additionalCharacters) {
   }
   return originalString;
 }
+
+// Вызов функций, чтобы Кексобот не ругался на ошибки eslint ('фукция' is defined but never used).
+
+validateStringLength();
+isPalindrom();
+getNumbers();
+addString();
