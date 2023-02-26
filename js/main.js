@@ -96,4 +96,4 @@ const photosDescriptions = Array.from(
 // 'photosDescriptions' is assigned a value but never used.
 photosDescriptions.concat([]);
 
-console.log(photosDescriptions);
+// console.log(photosDescriptions);
