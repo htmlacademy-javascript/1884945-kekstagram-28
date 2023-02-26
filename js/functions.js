@@ -63,7 +63,7 @@ function addString(originalString, minLength, additionalCharacters) {
 
 // Вызов функций, чтобы Кексобот не ругался на ошибки eslint ('фукция' is defined but never used).
 
-validateStringLength();
-isPalindrom();
-getNumbers();
-addString();
+validateStringLength('просто', 10);
+isPalindrom('топот');
+getNumbers('2023 год');
+addString('1', 2, '0');
