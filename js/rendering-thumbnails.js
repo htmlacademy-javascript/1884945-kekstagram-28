@@ -7,11 +7,12 @@ const renderingThumbnails = (array) => {
 
   const thumbnailsFragment = document.createDocumentFragment();
 
-  array.forEach(({ url, likes, comments }) => {
+  array.forEach(({ url, likes, comments, id }) => {
     const thumbnail = thumbnailTemplate.cloneNode(true);
     thumbnail.querySelector('.picture__img').src = url;
     thumbnail.querySelector('.picture__likes').textContent = likes;
     thumbnail.querySelector('.picture__comments').textContent = comments.length;
+    thumbnail.id = id;
     thumbnailsFragment.append(thumbnail);
   });
 
