@@ -2,13 +2,13 @@ import { createPhotoDescriptions } from './create-content.js';
 import { renderingThumbnails } from './rendering-thumbnails.js';
 import { openFullSizeThumbnail } from './full-size-thumbnail.js';
 
-const PhotoDescriptionsArray = createPhotoDescriptions();
+const photoDescriptions = createPhotoDescriptions();
 const picturesContainer = document.querySelector('.pictures');
 
 const createGallery = () => {
-  renderingThumbnails(PhotoDescriptionsArray);
+  renderingThumbnails(photoDescriptions);
 
   picturesContainer.addEventListener('click', openFullSizeThumbnail);
 };
 
-export { createGallery, PhotoDescriptionsArray };
+export { createGallery, photoDescriptions };

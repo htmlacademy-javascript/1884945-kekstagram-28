@@ -1,5 +1,5 @@
-import { PhotoDescriptionsArray } from './create-gallery.js';
-import { isEscapeKey, isPictureImg } from './util.js';
+import { photoDescriptions } from './create-gallery.js';
+import { isEscapeKey, isPictureImg, composeElement } from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
@@ -18,28 +18,31 @@ const renderFullSizeThumbnail = (evt) => {
       picture.querySelector('.picture__likes').textContent;
     const pictureCommentsCount =
       picture.querySelector('.picture__comments').textContent;
-    socialCaption.textContent = PhotoDescriptionsArray.find(
+    socialCaption.textContent = photoDescriptions.find(
       (element) => element.id === Number(evt.target.parentElement.id)
     ).description;
-    const commentsArray = PhotoDescriptionsArray.find(
+    const commentsArray = photoDescriptions.find(
       (element) => element.id === Number(evt.target.parentElement.id)
     ).comments;
+    const createSocialComments = () => {
+      commentsArray.forEach(({ avatar, name, message }) => {
+        const socialComment = composeElement('li', 'social__comment');
+        const socialPicture = composeElement('img', 'social__picture');
+        const socialText = composeElement('p', 'social__text', message);
+        socialPicture.src = avatar;
+        socialPicture.alt = name;
+        socialComment.appendChild(socialPicture);
+        socialComment.appendChild(socialText);
+        socialComments.appendChild(socialComment);
+      });
+    };
 
     bigPictureImg.src = evt.target.src;
     likesCount.textContent = pictureLikesCount;
     commentsCount.textContent = pictureCommentsCount;
 
     socialComments.innerHTML = '';
-    commentsArray.forEach(({ avatar, name, message }) => {
-      socialComments.innerHTML += `<li class="social__comment">
-        <img
-            class="social__picture"
-            src="${avatar}"
-            alt="${name}"
-            width="35" height="35">
-        <p class="social__text">${message}</p>
-    </li>`;
-    });
+    createSocialComments();
   }
 };
 
