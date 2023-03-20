@@ -24,7 +24,9 @@ const renderFullSizeThumbnail = (evt) => {
     const commentsArray = photoDescriptions.find(
       (element) => element.id === Number(evt.target.parentElement.id)
     ).comments;
+
     const createSocialComments = () => {
+      const socialCommentsElements = [];
       commentsArray.forEach(({ avatar, name, message }) => {
         const socialComment = composeElement('li', 'social__comment');
         const socialPicture = composeElement('img', 'social__picture');
@@ -33,8 +35,13 @@ const renderFullSizeThumbnail = (evt) => {
         socialPicture.alt = name;
         socialComment.appendChild(socialPicture);
         socialComment.appendChild(socialText);
-        socialComments.appendChild(socialComment);
+        socialCommentsElements.push(socialComment);
+        // socialComments.appendChild(socialComment);
       });
+      return socialCommentsElements;
+    };
+    const renderSocialComments = (array) => {
+      array.forEach((element) => socialComments.appendChild(element));
     };
 
     bigPictureImg.src = evt.target.src;
@@ -42,7 +49,7 @@ const renderFullSizeThumbnail = (evt) => {
     commentsCount.textContent = pictureCommentsCount;
 
     socialComments.innerHTML = '';
-    createSocialComments();
+    renderSocialComments(createSocialComments());
   }
 };
 
