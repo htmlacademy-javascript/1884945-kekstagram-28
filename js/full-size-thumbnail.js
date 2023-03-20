@@ -33,15 +33,14 @@ const renderFullSizeThumbnail = (evt) => {
         const socialText = composeElement('p', 'social__text', message);
         socialPicture.src = avatar;
         socialPicture.alt = name;
-        socialComment.appendChild(socialPicture);
-        socialComment.appendChild(socialText);
+        socialComment.append(socialPicture);
+        socialComment.append(socialText);
         socialCommentsElements.push(socialComment);
-        // socialComments.appendChild(socialComment);
       });
       return socialCommentsElements;
     };
     const renderSocialComments = (array) => {
-      array.forEach((element) => socialComments.appendChild(element));
+      array.forEach((element) => socialComments.append(element));
     };
 
     bigPictureImg.src = evt.target.src;
