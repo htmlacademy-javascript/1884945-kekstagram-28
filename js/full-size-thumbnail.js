@@ -12,9 +12,9 @@ const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 
-const createSocialComments = (commentsArray) => {
+const createSocialComments = (array) => {
   const socialCommentsElements = [];
-  commentsArray.forEach(({ avatar, name, message }) => {
+  array.forEach(({ avatar, name, message }) => {
     const socialComment = composeElement('li', 'social__comment');
     const socialPicture = composeElement('img', 'social__picture');
     const socialText = composeElement('p', 'social__text', message);
@@ -31,28 +31,45 @@ const renderSocialComments = (array) => {
   array.forEach((element) => socialComments.append(element));
 };
 
-const getPortionOfComments = (array, valueOfPortion) => {
+let getMoreComments; //Объявил отдельно, чтобы можно было удалять eventListener
+// при закрытии полноразмерной картинки при нажатии на крестик или кнопку Esc.
+// let вместо const чтобы eslint не ругался.
+const getPortionOfComments = (array) => {
   let featuredComments = 0;
-  if (array.length <= valueOfPortion) {
+  const totalComments = array.length;
+
+  if (totalComments <= VALUE_OF_COMMENTS_PORTION) {
     socialComments.innerHTML = '';
     renderSocialComments(array);
-    featuredComments = array.length;
-    socialCommentCount.innerHTML = `${featuredComments} из <span class='comments-count'>${array.length} комментариев`;
-  } else {
-    const getMoreComments = () => {
-      featuredComments += valueOfPortion;
-      socialCommentCount.innerHTML = `${featuredComments} из <span class='comments-count'>${array.length} комментариев`;
-      socialComments.innerHTML = '';
-      renderSocialComments(array.slice(0, featuredComments));
-      if (featuredComments < array.length) {
-        commentsLoader.classList.remove('hidden');
-        commentsLoader.addEventListener('click', getMoreComments);
-      } else {
-        commentsLoader.classList.add('hidden');
-        commentsLoader.removeEventListener('click', getMoreComments);
-      }
-    };
+    featuredComments = totalComments;
+    socialCommentCount.innerHTML = `${featuredComments} из <span class='comments-count'>${totalComments} комментариев`;
+    return;
   }
+
+  getMoreComments = () => {
+    featuredComments += VALUE_OF_COMMENTS_PORTION;
+    if (featuredComments >= totalComments) {
+      socialComments.innerHTML = '';
+      renderSocialComments(array);
+      featuredComments = totalComments;
+      socialCommentCount.innerHTML = `${featuredComments} из <span class='comments-count'>${totalComments} комментариев`;
+      commentsLoader.classList.add('hidden');
+      commentsLoader.removeEventListener('click', getMoreComments);
+      return;
+    }
+
+    socialComments.innerHTML = '';
+    renderSocialComments(array.slice(0, featuredComments));
+    socialCommentCount.innerHTML = `${featuredComments} из <span class='comments-count'>${totalComments} комментариев`;
+  };
+
+  featuredComments += VALUE_OF_COMMENTS_PORTION;
+  socialComments.innerHTML = '';
+  renderSocialComments(array.slice(0, featuredComments));
+  commentsLoader.classList.remove('hidden');
+  socialCommentCount.innerHTML = `${featuredComments} из <span class='comments-count'>${totalComments} комментариев`;
+
+  commentsLoader.addEventListener('click', getMoreComments);
 };
 
 const renderFullSizeThumbnail = (evt) => {
@@ -72,13 +89,9 @@ const renderFullSizeThumbnail = (evt) => {
     bigPictureImg.src = evt.target.src;
     likesCount.textContent = pictureLikesCount;
     commentsCount.textContent = pictureCommentsCount;
-
-    socialComments.innerHTML = '';
     commentsLoader.classList.add('hidden');
-    getPortionOfComments(
-      createSocialComments(commentsArray),
-      VALUE_OF_COMMENTS_PORTION
-    );
+
+    getPortionOfComments(createSocialComments(commentsArray));
   }
 };
 
@@ -86,6 +99,7 @@ const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeFullSizeThumbnail();
+    commentsLoader.removeEventListener('click', getMoreComments);
   }
 };
 
@@ -106,12 +120,6 @@ const openFullSizeThumbnail = (evt) => {
   bigPicture.classList.remove('hidden');
   bigPictureCancel.addEventListener('click', closeFullSizeThumbnail);
   document.addEventListener('keydown', onDocumentKeydown);
-
-  // После открытия окна спрячьте блоки счётчика комментариев .social__comment-count
-  // и загрузки новых комментариев .comments-loader, добавив им класс hidden, с ними
-  // мы разберёмся позже, в другом домашнем задании.
-  // socialCommentCount.classList.add('hidden');
-  // commentsLoader.classList.add('hidden');
 
   // После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с
   // фотографиями позади не прокручивался при скролле. При закрытии окна не забудьте
