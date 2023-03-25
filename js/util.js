@@ -45,6 +45,12 @@ const composeElement = (tagName, className, text) => {
   return element;
 };
 
+const cancelEscKeydown = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.stopPropagation();
+  }
+};
+
 export {
   getRandomInteger,
   createRandomIdFromRangeGenerator,
@@ -52,4 +58,5 @@ export {
   isEscapeKey,
   isPictureImg,
   composeElement,
+  cancelEscKeydown,
 };
