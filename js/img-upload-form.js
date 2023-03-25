@@ -36,7 +36,9 @@ const openimgUploadOverlay = () => {
   imgUploadOverlay.classList.remove('hidden');
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    pristine.validate();
+    if (pristine.validate()) {
+      imgUploadForm.submit();
+    }
   });
   document.body.classList.add('modal-open');
   imgUploadCancel.addEventListener('click', closeimgUploadOverlay);
