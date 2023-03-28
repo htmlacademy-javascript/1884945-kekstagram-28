@@ -73,26 +73,22 @@ const getPortionOfComments = (array) => {
 };
 
 const renderFullSizeThumbnail = (evt) => {
-  if (isPictureImg(evt)) {
-    const picture = evt.target.parentElement;
-    const pictureLikesCount =
-      picture.querySelector('.picture__likes').textContent;
-    const pictureCommentsCount =
-      picture.querySelector('.picture__comments').textContent;
-    socialCaption.textContent = photoDescriptions.find(
-      (element) => element.id === Number(evt.target.parentElement.id)
-    ).description;
-    const commentsArray = photoDescriptions.find(
-      (element) => element.id === Number(evt.target.parentElement.id)
-    ).comments;
-
-    bigPictureImg.src = evt.target.src;
-    likesCount.textContent = pictureLikesCount;
-    commentsCount.textContent = pictureCommentsCount;
-    commentsLoader.classList.add('hidden');
-
-    getPortionOfComments(createSocialComments(commentsArray));
-  }
+  const picture = evt.target.parentElement;
+  const pictureLikesCount =
+    picture.querySelector('.picture__likes').textContent;
+  const pictureCommentsCount =
+    picture.querySelector('.picture__comments').textContent;
+  socialCaption.textContent = photoDescriptions.find(
+    (element) => element.id === Number(evt.target.parentElement.id)
+  ).description;
+  const commentsArray = photoDescriptions.find(
+    (element) => element.id === Number(evt.target.parentElement.id)
+  ).comments;
+  bigPictureImg.src = evt.target.src;
+  likesCount.textContent = pictureLikesCount;
+  commentsCount.textContent = pictureCommentsCount;
+  commentsLoader.classList.add('hidden');
+  getPortionOfComments(createSocialComments(commentsArray));
 };
 
 const onDocumentKeydown = (evt) => {
@@ -115,16 +111,18 @@ function closeFullSizeThumbnail() {
 }
 
 const openFullSizeThumbnail = (evt) => {
-  renderFullSizeThumbnail(evt);
+  if (isPictureImg(evt)) {
+    renderFullSizeThumbnail(evt);
 
-  bigPicture.classList.remove('hidden');
-  bigPictureCancel.addEventListener('click', closeFullSizeThumbnail);
-  document.addEventListener('keydown', onDocumentKeydown);
+    bigPicture.classList.remove('hidden');
+    bigPictureCancel.addEventListener('click', closeFullSizeThumbnail);
+    document.addEventListener('keydown', onDocumentKeydown);
 
-  // После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с
-  // фотографиями позади не прокручивался при скролле. При закрытии окна не забудьте
-  // удалить этот класс.
-  document.body.classList.add('modal-open');
+    // После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с
+    // фотографиями позади не прокручивался при скролле. При закрытии окна не забудьте
+    // удалить этот класс.
+    document.body.classList.add('modal-open');
+  }
 };
 
 export { openFullSizeThumbnail };
