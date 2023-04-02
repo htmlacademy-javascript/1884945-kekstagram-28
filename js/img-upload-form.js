@@ -1,4 +1,6 @@
 import { isEscapeKey, cancelEscKeydown } from './util.js';
+import { addScale, resetScale } from './scale-img.js';
+import { addFilters, removeFilters } from './img-effects.js';
 
 const MAX_NUMBER_OF_HASHTAGS = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -21,7 +23,9 @@ const closeimgUploadOverlay = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
   hashTagsInput.removeEventListener('keydown', cancelEscKeydown);
   commentTextArea.removeEventListener('keydown', cancelEscKeydown);
+  resetScale();
   imgUploadForm.reset();
+  removeFilters();
 };
 // function declaration для всплытия и возможности и использования onDocumentKeydown
 // в closeimgUploadOverlay до объявления onDocumentKeydown.
@@ -45,6 +49,8 @@ const openimgUploadOverlay = () => {
   document.addEventListener('keydown', onDocumentKeydown);
   hashTagsInput.addEventListener('keydown', cancelEscKeydown);
   commentTextArea.addEventListener('keydown', cancelEscKeydown);
+  addScale();
+  addFilters();
 };
 
 uploadFileInput.addEventListener('change', openimgUploadOverlay);
