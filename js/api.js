@@ -1,4 +1,5 @@
-import { showAlert } from './util.js';
+import { showAlert, showSuccessMessage, showErrorMessage } from './messages.js';
+import { closeimgUploadOverlay } from './img-upload-form.js';
 
 const ErrorText = {
   GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу',
@@ -18,4 +19,19 @@ const getData = () =>
       throw new Error(ErrorText.GET_DATA);
     });
 
-export { getData };
+const sendData = (evt) => {
+  const formData = new FormData(evt.target);
+  fetch('https://28.javascript.pages.academy/kekstagram', {
+    method: 'POST',
+    body: formData,
+  })
+    .then(() => {
+      closeimgUploadOverlay();
+      showSuccessMessage();
+    })
+    .catch(() => {
+      showErrorMessage();
+    });
+};
+
+export { getData, sendData };

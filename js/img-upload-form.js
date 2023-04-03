@@ -1,6 +1,7 @@
 import { isEscapeKey, cancelEscKeydown } from './util.js';
 import { addScale, resetScale } from './scale-img.js';
 import { addFilters, removeFilters } from './img-effects.js';
+import { sendData } from './api.js';
 
 const MAX_NUMBER_OF_HASHTAGS = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -41,7 +42,7 @@ const openimgUploadOverlay = () => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (pristine.validate()) {
-      imgUploadForm.submit();
+      sendData(evt);
     }
   });
   document.body.classList.add('modal-open');
@@ -108,3 +109,5 @@ pristine.addValidator(
   isValidHashTags,
   viewRequirementsForVaildHashTag()
 );
+
+export { closeimgUploadOverlay, onDocumentKeydown };
