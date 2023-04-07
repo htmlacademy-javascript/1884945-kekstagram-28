@@ -19,9 +19,13 @@ const sendData = (evt) => {
     method: 'POST',
     body: formData,
   })
-    .then(() => {
-      closeimgUploadOverlay();
-      showSuccessMessage();
+    .then((response) => {
+      if (response.ok) {
+        closeimgUploadOverlay();
+        showSuccessMessage();
+      } else {
+        throw new Error();
+      }
     })
     .catch(() => {
       showErrorMessage();
