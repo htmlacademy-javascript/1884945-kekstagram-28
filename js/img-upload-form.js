@@ -1,6 +1,7 @@
 import { isEscapeKey, cancelEscKeydown } from './util.js';
 import { addScale, resetScale } from './scale-img.js';
 import { addFilters, removeFilters } from './img-effects.js';
+import { sendData } from './api.js';
 
 const MAX_NUMBER_OF_HASHTAGS = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -15,12 +16,20 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextParent: 'img-upload__field-wrapper',
 });
 
+const onSubmit = (evt) => {
+  evt.preventDefault();
+  if (pristine.validate()) {
+    sendData(evt);
+  }
+};
+
 const closeimgUploadOverlay = () => {
   imgUploadOverlay.classList.add('hidden');
   uploadFileInput.value = '';
   document.body.classList.remove('modal-open');
   imgUploadCancel.removeEventListener('click', closeimgUploadOverlay);
   document.removeEventListener('keydown', onDocumentKeydown);
+  imgUploadForm.removeEventListener('submit', onSubmit);
   hashTagsInput.removeEventListener('keydown', cancelEscKeydown);
   commentTextArea.removeEventListener('keydown', cancelEscKeydown);
   resetScale();
@@ -38,12 +47,7 @@ function onDocumentKeydown(evt) {
 
 const openimgUploadOverlay = () => {
   imgUploadOverlay.classList.remove('hidden');
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    if (pristine.validate()) {
-      imgUploadForm.submit();
-    }
-  });
+  imgUploadForm.addEventListener('submit', onSubmit);
   document.body.classList.add('modal-open');
   imgUploadCancel.addEventListener('click', closeimgUploadOverlay);
   document.addEventListener('keydown', onDocumentKeydown);
@@ -108,3 +112,5 @@ pristine.addValidator(
   isValidHashTags,
   viewRequirementsForVaildHashTag()
 );
+
+export { closeimgUploadOverlay, onDocumentKeydown };
