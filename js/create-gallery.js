@@ -1,15 +1,11 @@
-import { getData } from './api.js';
-import { renderingThumbnails } from './rendering-thumbnails.js';
 import { openFullSizeThumbnail } from './full-size-thumbnail.js';
-import { showFilters } from './filters.js';
+import { initSorting } from './sorting.js';
 
-const photoDescriptions = await getData().then((result) => result);
 const picturesContainer = document.querySelector('.pictures');
 
 const createGallery = () => {
-  renderingThumbnails(photoDescriptions);
-  showFilters();
+  initSorting();
   picturesContainer.addEventListener('click', openFullSizeThumbnail);
 };
 
-export { createGallery, photoDescriptions };
+export { createGallery };

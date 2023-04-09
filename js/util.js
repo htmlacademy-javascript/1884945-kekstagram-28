@@ -62,6 +62,7 @@ const debounce = (callback, timeoutDelay = 500) => {
 
 export {
   getRandomInteger,
+  shuffleArray,
   createRandomIdFromRangeGenerator,
   getRandomArrayElement,
   isEscapeKey,
