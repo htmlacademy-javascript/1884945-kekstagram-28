@@ -31,7 +31,7 @@ const getSortedPhotoDescriptions = () => {
   }
 };
 
-const onSortingClick = (evt) => {
+const renderSortedThumbnails = (evt) => {
   if (!evt.target.classList.contains('img-filters__button')) {
     return;
   }
@@ -40,15 +40,16 @@ const onSortingClick = (evt) => {
     currentFilterButton = evt.target;
     currentFilterButton.classList.add('img-filters__button--active');
     document.querySelectorAll('.picture').forEach((e) => e.remove());
-    const debouncedrenderingThumbnails = debounce(renderingThumbnails);
-    debouncedrenderingThumbnails(getSortedPhotoDescriptions());
+    renderingThumbnails(getSortedPhotoDescriptions());
   }
 };
+
+const debouncedRenderSortedThumbnails = debounce(renderSortedThumbnails);
 
 const initSorting = () => {
   imgFilters.classList.remove('img-filters--inactive');
   renderingThumbnails(getSortedPhotoDescriptions());
-  imgFiltersForm.addEventListener('click', onSortingClick);
+  imgFiltersForm.addEventListener('click', debouncedRenderSortedThumbnails);
 };
 
 export { initSorting, photoDescriptions, getSortedPhotoDescriptions };
