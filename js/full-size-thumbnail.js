@@ -1,4 +1,4 @@
-import { photoDescriptions } from './create-gallery.js';
+import { photoDescriptions } from './sorting.js';
 import { isEscapeKey, isPictureImg, composeElement } from './util.js';
 
 const VALUE_OF_COMMENTS_PORTION = 5;
