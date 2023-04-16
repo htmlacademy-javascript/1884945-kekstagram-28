@@ -112,7 +112,7 @@ const chooseEffect = (evt) => {
   }
   effectLevelSlider.noUiSlider.off('update', onUpdateSlider);
   effectLevelSliderContainer.classList.remove('hidden');
-  imgUploadPreview.className = `effects__preview--${
+  imgUploadPreview.className = `img-upload__preview effects__preview--${
     chosenEffect.name.split('-')[1]
   }`;
   updateSlider(chosenEffect);
